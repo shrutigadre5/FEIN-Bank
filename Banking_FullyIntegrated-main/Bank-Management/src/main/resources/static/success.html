@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Success</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+        body {
+            background-color: #fceeee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .success-box {
+            background-color: #8D1B3D;
+            color: white;
+            padding: 50px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .success-box h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .success-box p {
+            font-size: 1.2em;
+        }
+
+        .redirect-msg {
+            margin-top: 15px;
+            font-size: 0.95em;
+            color: #fcdcdc;
+        }
+    </style>
+
+    <!-- Auto redirect script -->
+    <script>
+        setTimeout(() => {
+            window.location.href = "/homepage.html"; // Adjust if home page is different
+        }, 4000); // 4000ms = 4 seconds
+    </script>
+</head>
+<body>
+    <div class="success-box">
+        <h1>Account Registered!</h1>
+        <p>Your request has been submitted successfully.</p>
+        <div class="redirect-msg">You will be redirected shortly...</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Login - FEINBank</title>
+  <link rel="stylesheet" href="/css/login.css" />
+</head>
+<body>
+
+  <div class="login-container">
+    
+    <!-- Left Side: Login Form -->
+    <div class="form-section">
+      <div class="logo">FEINBank <span>Login</span></div>
+      <h2>Welcome Back</h2>
+      <p class="small-text">Please enter your Customer ID and Password</p>
+      
+      <form id="loginForm">
+  <input type="text" id="customerId" placeholder="Customer ID" required />
+  <input type="password" id="password" placeholder="Password" required />
+
+  <div class="captcha-wrapper">
+    <span id="captchaCode" class="captcha-code"></span>
+    <button type="button" id="refreshCaptcha" title="Refresh CAPTCHA">&#x21bb;</button>
+  </div>
+
+  <input type="text" id="captchaInput" placeholder="Enter CAPTCHA above" required />
+
+  <button type="submit" id="loginBtn" disabled>Login</button>
+</form>
+
+
+      <div class="alt-option">
+        Don’t have an account? <a href="/account-request.html">Register Now</a>
+      </div>
+    </div>
+
+    <!-- Right Side: Image/Branding -->
+    <div class="image-section">
+      <div class="text-overlay">
+        <h3>Secure & Smart Banking</h3>
+        <p>Experience modern digital banking built on trust and security.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+
+</body>
+</html>

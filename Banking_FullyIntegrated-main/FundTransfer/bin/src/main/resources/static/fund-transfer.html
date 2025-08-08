@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fund Transfer - Banking Portal</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    .transfer-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .card-title {
+      font-size: 2rem;
+      color: #2d3748;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-subtitle {
+      color: #718096;
+      font-size: 1rem;
+    }
+
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .step.active {
+      background: #667eea;
+      color: white;
+    }
+
+    .step.inactive {
+      background: #e2e8f0;
+      color: #718096;
+    }
+
+    .form-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 0.5rem;
+    }
+
+    input, select {
+      padding: 0.75rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .validate-btn {
+      padding: 0.5rem 1rem;
+      background: #48bb78;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-left: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .validate-btn:hover {
+      background: #38a169;
+    }
+
+    .info-display {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .info-display.show {
+      display: block;
+    }
+
+    .info-display.success {
+      background: #f0fff4;
+      border-color: #48bb78;
+      color: #22543d;
+    }
+
+    .info-display.error {
+      background: #fed7d7;
+      border-color: #e53e3e;
+      color: #742a2a;
+    }
+
+    .transfer-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .transfer-option {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .transfer-option:hover {
+      border-color: #667eea;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    }
+
+    .transfer-option.selected {
+      border-color: #667eea;
+      background: #f7fafc;
+    }
+
+    .option-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .option-title {
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 0.25rem;
+    }
+
+    .option-description {
+      font-size: 0.85rem;
+      color: #718096;
+    }
+
+    .submit-section {
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      color: #667eea;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .transfer-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .container {
+        padding: 0 0.5rem;
+      }
+      
+      .transfer-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="transfer-card">
+      <div class="card-header">
+        <h1 class="card-title">💸 Fund Transfer</h1>
+        <p class="card-subtitle">Secure and instant money transfers</p>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step active" id="step-1">
+          <span>1️⃣</span>
+          <span>Choose Method</span>
+        </div>
+        <div class="step inactive" id="step-2">
+          <span>2️⃣</span>
+          <span>Enter Details</span>
+        </div>
+        <div class="step inactive" id="step-3">
+          <span>3️⃣</span>
+          <span>Confirm Transfer</span>
+        </div>
+      </div>
+
+      <!-- Account Information Display -->
+      <div id="account-info-section" class="form-section">
+        <h3 class="section-title">Customer & Account Selection</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer ID</label>
+            <input type="text" id="customer-id" readonly placeholder="Loading...">
+          </div>
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" id="customer-name" readonly placeholder="Loading...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Select Account</label>
+            <select id="account-select">
+              <option value="">Loading accounts...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Account Balance</label>
+            <input type="text" id="account-balance" readonly placeholder="Select account first">
+          </div>
+        </div>
+        <div id="account-info" class="info-display"></div>
+      </div>
+
+      <!-- Step 1: Transfer Method Selection -->
+      <div id="method-selection" class="form-section">
+        <h3 class="section-title">Choose Transfer Method</h3>
+        <div class="transfer-options">
+          <div class="transfer-option" data-method="self-deposit">
+            <div class="option-icon">💰</div>
+            <div class="option-title">Self Deposit</div>
+            <div class="option-description">Add money to your account</div>
+          </div>
+          <div class="transfer-option" data-method="payee-transfer">
+            <div class="option-icon">👥</div>
+            <div class="option-title">Payee Transfer</div>
+            <div class="option-description">Send to saved beneficiaries</div>
+          </div>
+          <div class="transfer-option" data-method="manual-transfer">
+            <div class="option-icon">🏛️</div>
+            <div class="option-title">Manual Transfer</div>
+            <div class="option-description">Transfer to any account</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Transfer Details -->
+      <div id="transfer-details" class="form-section" style="display: none;">
+        <h3 class="section-title">Transfer Details</h3>
+        
+        <!-- Self Deposit Form -->
+        <div id="self-deposit-form" class="transfer-form" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="self-amount" step="0.01" min="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" id="self-remarks" placeholder="Optional remarks">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <button type="button" class="submit-btn" onclick="validateAndContinue()">Continue to Summary</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payee Transfer Form -->
+        <div id="payee-transfer-form" class="transfer-form" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Select Payee</label>
+              <select id="payee-select">
+                <option value="">Loading payees...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="payee-method">
+                <option value="IMPS">IMPS (Instant)</option>
+                <option value="NEFT">NEFT (Within 2 hours)</option>
+                <option value="RTGS">RTGS (Minimum ₹2,00,000)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="payee-amount" step="0.01" min="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" id="payee-remarks" placeholder="Optional remarks">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <button type="button" class="submit-btn" onclick="validateAndContinue()">Continue to Summary</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Transfer Form -->
+        <div id="manual-transfer-form" class="transfer-form" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Recipient Account Number</label>
+              <div style="display: flex; align-items: center;">
+                <input type="number" id="recipient-account" placeholder="Enter account number">
+                <button type="button" class="validate-btn" id="validate-account">Validate</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>IFSC Code</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="ifsc-code" placeholder="Enter IFSC code" style="text-transform: uppercase;">
+                <button type="button" class="validate-btn" id="validate-ifsc">Validate</button>
+              </div>
+            </div>
+          </div>
+          <div id="validation-info" class="info-display"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Recipient Name <span style="color: red;">*</span></label>
+              <input type="text" id="recipient-name" placeholder="Enter recipient full name" style="background-color: white; cursor: text;">
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="manual-method">
+                <option value="IMPS">IMPS (Instant)</option>
+                <option value="NEFT">NEFT (Within 2 hours)</option>
+                <option value="RTGS">RTGS (Minimum ₹2,00,000)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="manual-amount" step="0.01" min="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" id="manual-remarks" placeholder="Optional remarks">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <button type="button" class="submit-btn" onclick="validateAndContinue()">Continue to Summary</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Section -->
+      <div class="submit-section" id="submit-section" style="display: none;">
+        <h3 class="section-title">Confirm Transfer</h3>
+        <div id="transfer-summary" class="info-display show" style="margin-bottom: 1rem;">
+          <div id="summary-content"></div>
+        </div>
+        <button class="submit-btn" id="submit-transfer">
+          <span id="submit-text">🚀 Send Money</span>
+        </button>
+        <div class="loading" id="loading">
+          <div>Processing your transfer...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    let urlCustomerId = null;
+    let urlAccountNumber = null;
+    let selectedMethod = null;
+    let customerData = null;
+    let accountData = null;
+    let selectedAccountId = null;
+    let allAccounts = [];
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      extractUrlParameters();
+      loadCustomerInformation();
+      setupEventListeners();
+    });
+
+    function extractUrlParameters() {
+      const urlParams = new URLSearchParams(window.location.search);
+      urlCustomerId = urlParams.get('customerId') || urlParams.get('customer_id');
+      urlAccountNumber = urlParams.get('accountNo') || urlParams.get('account_no') || urlParams.get('accountNumber');
+      
+      if (!urlCustomerId) {
+        showError('Missing required URL parameter: customerId');
+        return;
+      }
+      
+      // Display the customer ID immediately
+      document.getElementById('customer-id').value = urlCustomerId;
+    }
+
+    async function loadCustomerInformation() {
+      if (!urlCustomerId) return;
+      
+      try {
+        // Load customer information
+        const customerResponse = await fetch(`/api/customers/${urlCustomerId}`);
+        customerData = await customerResponse.json();
+        
+        if (customerResponse.ok) {
+          document.getElementById('customer-name').value = `${customerData.firstName} ${customerData.lastName}`;
+          
+          // Load customer's accounts
+          await loadCustomerAccounts();
+        } else {
+          throw new Error(customerData.error || 'Failed to load customer');
+        }
+        
+      } catch (error) {
+        showError('Error loading customer information: ' + error.message);
+        document.getElementById('account-info').innerHTML = `
+          <div class="error">
+            ❌ ${error.message}
+          </div>
+        `;
+        document.getElementById('account-info').className = 'info-display show error';
+      }
+    }
+
+    async function loadCustomerAccounts() {
+      try {
+        // Load account information from Bank Management system
+        const accountsResponse = await fetch(`/api/customers/${urlCustomerId}/accounts`);
+        const accounts = await accountsResponse.json();
+        
+        if (accountsResponse.ok && accounts.length > 0) {
+          allAccounts = accounts;
+          populateAccountSelect(accounts);
+          
+          // If URL has account number, pre-select it
+          if (urlAccountNumber) {
+            const matchingAccount = accounts.find(acc => 
+              (acc.accountNumber && acc.accountNumber.toString() === urlAccountNumber) ||
+              (acc.accountNo && acc.accountNo.toString() === urlAccountNumber)
+            );
+            if (matchingAccount) {
+              document.getElementById('account-select').value = matchingAccount.accountNumber || matchingAccount.accountNo;
+              onAccountSelect();
+            }
+          }
+        } else {
+          throw new Error('No accounts found for this customer');
+        }
+        
+      } catch (error) {
+        showError('Error loading accounts: ' + error.message);
+        document.getElementById('account-select').innerHTML = '<option value="">Error loading accounts</option>';
+      }
+    }
+
+    function populateAccountSelect(accounts) {
+      const accountSelect = document.getElementById('account-select');
+      accountSelect.innerHTML = '<option value="">Select an account</option>';
+      
+      accounts.forEach(account => {
+        const option = document.createElement('option');
+        const accountNumber = account.accountNumber || account.accountNo;
+        const accountType = account.accountType || account.type || 'Account';
+        const balance = account.balance || 0;
+        
+        option.value = accountNumber;
+        option.textContent = `${accountNumber} - ${accountType} (₹${balance})`;
+        accountSelect.appendChild(option);
+      });
+    }
+
+    function onAccountSelect() {
+      const accountSelect = document.getElementById('account-select');
+      const selectedAccountNumber = accountSelect.value;
+      
+      if (!selectedAccountNumber) {
+        document.getElementById('account-balance').value = 'Select account first';
+        selectedAccountId = null;
+        accountData = null;
+        return;
+      }
+      
+      // Find the selected account data
+      accountData = allAccounts.find(acc => 
+        (acc.accountNumber && acc.accountNumber.toString() === selectedAccountNumber) ||
+        (acc.accountNo && acc.accountNo.toString() === selectedAccountNumber)
+      );
+      
+      if (accountData) {
+        selectedAccountId = accountData.accountNumber || accountData.accountNo;
+        document.getElementById('account-balance').value = `₹${accountData.balance || 0}`;
+        
+        document.getElementById('account-info').innerHTML = `
+          <div class="success">
+            ✅ Account selected: ${accountData.accountType || 'Account'} ending in ${selectedAccountNumber.slice(-4)}
+          </div>
+        `;
+        document.getElementById('account-info').className = 'info-display show success';
+        
+        // Update URL account number for consistency
+        urlAccountNumber = selectedAccountNumber;
+      }
+    }
+
+    function setupEventListeners() {
+      // Account selection
+      document.getElementById('account-select').addEventListener('change', onAccountSelect);
+      
+      // Transfer method selection
+      document.querySelectorAll('.transfer-option').forEach(option => {
+        option.addEventListener('click', () => selectTransferMethod(option.dataset.method));
+      });
+      
+      // Validation buttons
+      document.getElementById('validate-ifsc').addEventListener('click', validateIfsc);
+      document.getElementById('validate-account').addEventListener('click', validateAccount);
+      
+      // Submit button
+      document.getElementById('submit-transfer').addEventListener('click', submitTransfer);
+      
+      // Test recipient name field functionality
+      document.getElementById('recipient-name').addEventListener('input', function() {
+        console.log('Recipient name changed to:', this.value);
+      });
+      
+      document.getElementById('recipient-name').addEventListener('focus', function() {
+        console.log('Recipient name field focused - you can type now!');
+        this.style.borderColor = '#667eea';
+      });
+      
+      document.getElementById('recipient-name').addEventListener('blur', function() {
+        this.style.borderColor = '#e2e8f0';
+      });
+    }
+
+    function selectTransferMethod(method) {
+      // Check if account is selected
+      if (!selectedAccountId) {
+        showError('Please select an account first');
+        return;
+      }
+      
+      selectedMethod = method;
+      
+      // Update UI
+      document.querySelectorAll('.transfer-option').forEach(opt => opt.classList.remove('selected'));
+      document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+      
+      // Show appropriate form
+      document.querySelectorAll('.transfer-form').forEach(form => form.style.display = 'none');
+      document.getElementById(`${method}-form`).style.display = 'block';
+      
+      // Load payees if needed
+      if (method === 'payee-transfer') {
+        loadPayees();
+      }
+      
+      showStep(2);
+    }
+
+    async function loadPayees() {
+      if (!urlCustomerId) {
+        showError('Customer ID not available');
+        return;
+      }
+      
+      try {
+        // Fetch payees directly from database using customerId
+        const response = await fetch(`localhost:8082/api/payees/customer/${urlCustomerId}`);
+        const payees = await response.json();
+        
+        const payeeSelect = document.getElementById('payee-select');
+        payeeSelect.innerHTML = '<option value="">Select Payee</option>';
+        
+        if (response.ok && payees.length > 0) {
+          payees.forEach(payee => {
+            const option = document.createElement('option');
+            option.value = payee.payeeId || payee.id;
+            
+            // Enhanced payee display with more details
+            const payeeName = payee.payeeName || payee.name || 'Unknown';
+            const payeeAccount = payee.payeeAccountNumber || payee.accountNumber || 'N/A';
+            const payeeBank = payee.payeeBankName || payee.bankName || '';
+            
+            option.textContent = `${payeeName} - ${payeeAccount}${payeeBank ? ` (${payeeBank})` : ''}`;
+            option.setAttribute('data-payee-name', payeeName);
+            option.setAttribute('data-payee-account', payeeAccount);
+            option.setAttribute('data-payee-bank', payeeBank);
+            
+            payeeSelect.appendChild(option);
+          });
+          
+          // Show payee count
+          const payeeInfo = document.createElement('div');
+          payeeInfo.style.marginTop = '0.5rem';
+          payeeInfo.style.fontSize = '0.9rem';
+          payeeInfo.style.color = '#718096';
+          payeeInfo.textContent = `${payees.length} payee(s) found for this customer`;
+          
+          const payeeFormGroup = payeeSelect.closest('.form-group');
+          payeeFormGroup.appendChild(payeeInfo);
+          
+        } else {
+          payeeSelect.innerHTML = '<option value="">No payees found for this customer</option>';
+        }
+      } catch (error) {
+        document.getElementById('payee-select').innerHTML = '<option value="">Error loading payees</option>';
+        showError('Failed to load payees: ' + error.message);
+      }
+    }
+
+    async function validateIfsc() {
+      const ifscCode = document.getElementById('ifsc-code').value.trim().toUpperCase();
+      
+      if (!ifscCode) {
+        showError('Please enter IFSC code');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`/api/validate-ifsc/${ifscCode}`);
+        const data = await response.json();
+        
+        const infoDiv = document.getElementById('validation-info');
+        
+        if (data.valid) {
+          infoDiv.innerHTML = `
+            <div><strong>Bank:</strong> ${data.bankName}</div>
+            <div><strong>IFSC:</strong> ${data.ifscCode}</div>
+          `;
+          infoDiv.className = 'info-display show success';
+          document.getElementById('ifsc-code').value = data.ifscCode;
+        } else {
+          infoDiv.innerHTML = `❌ ${data.error}`;
+          infoDiv.className = 'info-display show error';
+        }
+      } catch (error) {
+        showError('Error validating IFSC code');
+      }
+    }
+
+    async function validateAccount() {
+      const accountNumber = document.getElementById('recipient-account').value;
+      const ifscCode = document.getElementById('ifsc-code').value.trim().toUpperCase();
+      
+      if (!accountNumber || !ifscCode) {
+        showError('Please enter both account number and IFSC code');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`/api/validate-account/${accountNumber}/ifsc/${ifscCode}`);
+        const data = await response.json();
+        
+        if (data.valid) {
+          showSuccess(`Account validated successfully! Please enter the recipient name manually.`);
+        } else {
+          showError(data.error);
+        }
+      } catch (error) {
+        showError('Error validating account');
+      }
+    }
+
+    async function submitTransfer() {
+      const submitBtn = document.getElementById('submit-transfer');
+      const submitText = document.getElementById('submit-text');
+      const loading = document.getElementById('loading');
+      
+      if (!validateForm()) return;
+      
+      // Update button text based on transfer type
+      let buttonText = '🚀 Send Money';
+      switch (selectedMethod) {
+        case 'self-deposit':
+          buttonText = '💰 Processing Deposit...';
+          break;
+        case 'payee-transfer':
+          buttonText = '👥 Sending to Payee...';
+          break;
+        case 'manual-transfer':
+          buttonText = '🏛️ Processing Transfer...';
+          break;
+      }
+      
+      submitBtn.disabled = true;
+      submitText.textContent = buttonText;
+      loading.style.display = 'block';
+      
+      try {
+        const transferData = prepareTransferData();
+        const response = await fetch(transferData.url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(transferData.data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          submitText.textContent = '✅ Transfer Successful!';
+          showSuccess(`Transfer successful! Transaction ID: ${result.transactionId}`);
+          // Show success and option to make another transfer
+          setTimeout(() => {
+            if (confirm('Transfer completed successfully! Would you like to make another transfer?')) {
+              resetForm();
+            } else {
+              window.close(); // Close the window/tab
+            }
+          }, 2000);
+        } else {
+          submitText.textContent = '❌ Transfer Failed';
+          showError(result.error || 'Transfer failed');
+        }
+      } catch (error) {
+        submitText.textContent = '❌ Transfer Failed';
+        showError('Transfer failed: ' + error.message);
+      } finally {
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitText.textContent = '🚀 Send Money';
+          loading.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    function prepareTransferData() {
+      let url, data;
+      
+      switch (selectedMethod) {
+        case 'self-deposit':
+          url = `/api/${urlCustomerId}/${selectedAccountId}/self-deposit`;
+          data = {
+            amount: parseFloat(document.getElementById('self-amount').value),
+            paymentMethod: 'SELF_DEPOSIT',
+            remarks: document.getElementById('self-remarks').value || 'Self deposit',
+            transactionPassword: document.getElementById('self-transaction-password').value
+          };
+          break;
+          
+        case 'payee-transfer':
+          const payeeId = document.getElementById('payee-select').value;
+          url = `/api/${urlCustomerId}/${selectedAccountId}/payee-transfer/${payeeId}`;
+          data = {
+            amount: parseFloat(document.getElementById('payee-amount').value),
+            paymentMethod: document.getElementById('payee-method').value,
+            remarks: document.getElementById('payee-remarks').value || 'Payee transfer',
+            transactionPassword: document.getElementById('payee-transaction-password').value
+          };
+          break;
+          
+        case 'manual-transfer':
+          url = `/api/manual-transfer`;
+          data = {
+            fromAccountNumber: selectedAccountId,
+            toAccountNumber: document.getElementById('recipient-account').value,
+            recipientName: document.getElementById('recipient-name').value,
+            ifscCode: document.getElementById('ifsc-code').value,
+            amount: parseFloat(document.getElementById('manual-amount').value),
+            paymentMethod: document.getElementById('manual-method').value,
+            remarks: document.getElementById('manual-remarks').value || 'Manual transfer',
+            transactionPassword: document.getElementById('manual-transaction-password').value,
+            customerId: urlCustomerId
+          };
+          break;
+      }
+      
+      return { url, data };
+    }
+
+    function validateForm() {
+      if (!urlCustomerId || !selectedAccountId || !selectedMethod) {
+        showError('Missing required information. Please ensure customer ID is provided, an account is selected, and transfer method is chosen.');
+        return false;
+      }
+      
+      switch (selectedMethod) {
+        case 'self-deposit':
+          const selfAmount = document.getElementById('self-amount').value;
+          const selfPassword = document.getElementById('self-transaction-password').value;
+          if (!selfAmount || parseFloat(selfAmount) <= 0) {
+            showError('Please enter a valid amount');
+            return false;
+          }
+          if (!selfPassword || selfPassword.trim().length === 0) {
+            showError('Please enter your transaction password');
+            return false;
+          }
+          break;
+          
+        case 'payee-transfer':
+          const payeeId = document.getElementById('payee-select').value;
+          const payeeAmount = document.getElementById('payee-amount').value;
+          const payeePassword = document.getElementById('payee-transaction-password').value;
+          if (!payeeId) {
+            showError('Please select a payee');
+            return false;
+          }
+          if (!payeeAmount || parseFloat(payeeAmount) <= 0) {
+            showError('Please enter a valid amount');
+            return false;
+          }
+          if (!payeePassword || payeePassword.trim().length === 0) {
+            showError('Please enter your transaction password');
+            return false;
+          }
+          break;
+          
+        case 'manual-transfer':
+          const recipientAccount = document.getElementById('recipient-account').value;
+          const recipientName = document.getElementById('recipient-name').value;
+          const ifscCode = document.getElementById('ifsc-code').value;
+          const manualAmount = document.getElementById('manual-amount').value;
+          const manualPassword = document.getElementById('manual-transaction-password').value;
+          
+          if (!recipientAccount || !recipientName || !ifscCode || !manualAmount) {
+            showError('Please fill all required fields');
+            return false;
+          }
+          if (parseFloat(manualAmount) <= 0) {
+            showError('Please enter a valid amount');
+            return false;
+          }
+          if (!manualPassword || manualPassword.trim().length === 0) {
+            showError('Please enter your transaction password');
+            return false;
+          }
+          break;
+      }
+      
+      // Show transfer summary before final confirmation
+      showTransferSummary();
+      return true;
+    }
+
+    function validateAndContinue() {
+      if (validateForm()) {
+        showTransferSummary();
+      }
+    }
+
+    function showTransferSummary() {
+      let summaryHtml = '<h4>Transfer Summary</h4>';
+      summaryHtml += `<p><strong>Customer:</strong> ${document.getElementById('customer-name').value}</p>`;
+      summaryHtml += `<p><strong>From Account:</strong> ${selectedAccountId}`;
+      if (accountData && accountData.accountType) {
+        summaryHtml += ` (${accountData.accountType})`;
+      }
+      summaryHtml += `</p>`;
+      summaryHtml += `<p><strong>Current Balance:</strong> ₹${accountData ? accountData.balance || 0 : 0}</p>`;
+      
+      // Update button text based on transfer type
+      const submitText = document.getElementById('submit-text');
+      
+      switch (selectedMethod) {
+        case 'self-deposit':
+          summaryHtml += `<p><strong>Type:</strong> Self Deposit</p>`;
+          summaryHtml += `<p><strong>Amount:</strong> ₹${document.getElementById('self-amount').value}</p>`;
+          summaryHtml += `<p><strong>Remarks:</strong> ${document.getElementById('self-remarks').value || 'Self deposit'}</p>`;
+          submitText.textContent = '💰 Deposit Money';
+          break;
+          
+        case 'payee-transfer':
+          const payeeSelect = document.getElementById('payee-select');
+          const selectedPayeeOption = payeeSelect.selectedOptions[0];
+          const payeeText = selectedPayeeOption.textContent;
+          const payeeName = selectedPayeeOption.getAttribute('data-payee-name') || 'Unknown';
+          const payeeAccount = selectedPayeeOption.getAttribute('data-payee-account') || 'N/A';
+          
+          summaryHtml += `<p><strong>Type:</strong> Payee Transfer</p>`;
+          summaryHtml += `<p><strong>To Payee:</strong> ${payeeName}</p>`;
+          summaryHtml += `<p><strong>To Account:</strong> ${payeeAccount}</p>`;
+          summaryHtml += `<p><strong>Amount:</strong> ₹${document.getElementById('payee-amount').value}</p>`;
+          summaryHtml += `<p><strong>Method:</strong> ${document.getElementById('payee-method').value}</p>`;
+          summaryHtml += `<p><strong>Remarks:</strong> ${document.getElementById('payee-remarks').value || 'Payee transfer'}</p>`;
+          submitText.textContent = `👥 Send to ${payeeName}`;
+          break;
+          
+        case 'manual-transfer':
+          summaryHtml += `<p><strong>Type:</strong> Manual Transfer</p>`;
+          summaryHtml += `<p><strong>To Account:</strong> ${document.getElementById('recipient-account').value}</p>`;
+          summaryHtml += `<p><strong>Recipient:</strong> ${document.getElementById('recipient-name').value}</p>`;
+          summaryHtml += `<p><strong>IFSC:</strong> ${document.getElementById('ifsc-code').value}</p>`;
+          summaryHtml += `<p><strong>Amount:</strong> ₹${document.getElementById('manual-amount').value}</p>`;
+          summaryHtml += `<p><strong>Method:</strong> ${document.getElementById('manual-method').value}</p>`;
+          summaryHtml += `<p><strong>Remarks:</strong> ${document.getElementById('manual-remarks').value || 'Manual transfer'}</p>`;
+          submitText.textContent = `🏛️ Send to ${document.getElementById('recipient-name').value}`;
+          break;
+      }
+      
+      document.getElementById('summary-content').innerHTML = summaryHtml;
+      showStep(3);
+    }
+
+    function showStep(step) {
+      // Update step indicators
+      document.querySelectorAll('.step').forEach((s, index) => {
+        if (index + 1 <= step) {
+          s.className = 'step active';
+        } else {
+          s.className = 'step inactive';
+        }
+      });
+      
+      switch (step) {
+        case 2:
+          document.getElementById('transfer-details').style.display = 'block';
+          break;
+        case 3:
+          document.getElementById('submit-section').style.display = 'block';
+          break;
+      }
+    }
+
+    function hideStep(step) {
+      document.getElementById(`step-${step}`).className = 'step inactive';
+      
+      switch (step) {
+        case 2:
+          document.getElementById('transfer-details').style.display = 'none';
+          hideStep(3);
+          break;
+        case 3:
+          document.getElementById('submit-section').style.display = 'none';
+          break;
+      }
+    }
+
+    function showSuccess(message) {
+      alert('✅ ' + message);
+    }
+
+    function showError(message) {
+      alert('❌ ' + message);
+    }
+
+    function resetForm() {
+      // Reset form but keep customer and account information
+      selectedMethod = null;
+      document.querySelectorAll('.transfer-option').forEach(opt => opt.classList.remove('selected'));
+      document.querySelectorAll('.transfer-form').forEach(form => form.style.display = 'none');
+      document.getElementById('transfer-details').style.display = 'none';
+      document.getElementById('submit-section').style.display = 'none';
+      
+      // Reset step indicators
+      document.getElementById('step-1').className = 'step active';
+      document.getElementById('step-2').className = 'step inactive';
+      document.getElementById('step-3').className = 'step inactive';
+      
+      // Clear form inputs (but preserve account selection)
+      document.querySelectorAll('input[type="number"], input[type="text"]:not([readonly])').forEach(input => {
+        if (input.id !== 'customer-id' && input.id !== 'customer-name' && input.id !== 'account-balance') {
+          input.value = '';
+        }
+      });
+      document.querySelectorAll('select').forEach(select => {
+        if (select.id !== 'account-select' && select.id !== 'payee-method' && select.id !== 'manual-method') {
+          select.selectedIndex = 0;
+        }
+      });
+      
+      // Remove any payee info elements that were dynamically added
+      const payeeInfoElements = document.querySelectorAll('.form-group div[style*="margin-top"]');
+      payeeInfoElements.forEach(el => {
+        if (el.textContent.includes('payee(s) found')) {
+          el.remove();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

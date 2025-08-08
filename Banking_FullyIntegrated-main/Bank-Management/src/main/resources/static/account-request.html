@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Account Request Form</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="account-request-container slide-in">
+<!-- Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="logo">FEINBank</div>
+    <nav class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</header>
+    <!-- Parallax Header -->
+    <section class="parallax" id="hero">
+        <div class="hero-text">Open Your Account</div>
+    </section>
+    <!-- Form Section -->
+    <section class="form-section">
+        <div class="form-container">
+            <h1>Account Request Form</h1>
+            <form id="accountRequestForm" novalidate onsubmit="return false;">
+                <div class="form-grid">
+                    <div>
+                        <label for="title">Title</label>
+                        <select name="title" id="title" required>
+                            <option value="">Select</option>
+                            <option>Mr</option>
+                            <option>Mrs</option>
+                            <option>Miss</option>
+                            <option>Ms</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" required />
+                    </div>
+                    <div>
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" id="middleName" />
+                    </div>
+                    <div>
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" required />
+                    </div>
+                    <div>
+                        <label for="mobileNo">Mobile Number</label>
+                        <input type="text" id="mobileNo" required />
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required />
+                    </div>
+                    <div>
+					    <label for="aadharNo">Aadhar Number</label>
+					    <input type="text" id="aadharNo" required />
+					    <label for="aadharFile" class="upload-label">Upload Aadhar Card (PDF or Image)</label>
+					    <input type="file" id="aadharFile" accept=".pdf,.jpg,.jpeg,.png" required />
+					</div>
+                    <div>
+					    <label for="panNo">PAN Number</label>
+					    <input type="text" id="panNo" required />
+					    <label for="panFile" class="upload-label">Upload PAN Card (PDF or Image)</label>
+					    <input type="file" id="panFile" accept=".pdf,.jpg,.jpeg,.png" required />
+					</div>
+                    <div>
+                        <label for="dob">Date of Birth</label>
+                        <input type="date" id="dob" required />
+                    </div>
+                    <div>
+                        <label for="occupation">Occupation</label>
+                        <select id="occupation" required>
+                            <option value="">Select</option>
+                            <option>Business</option>
+                            <option>Employee</option>
+                            <option>Unemployed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="annualIncome">Annual Income</label>
+                        <input type="number" id="annualIncome" required />
+                    </div>
+					
+					<div>
+					<label for="accountType">Account Type</label>
+					<select id="accountType" name="accountType" required>
+					    <option value="">Select</option>
+					    <option value="SAVINGS">Savings</option>
+					    <option value="CURRENT">Current</option>
+					    <option value="SALARIED">Salaried</option>
+					</select>
+					</div>
+                    <div class="full-width">
+                        <label for="residentialAddress">Residential Address</label>
+                        <textarea id="residentialAddress" rows="3" required></textarea>
+                    </div>
+                    <div class="full-width">
+                        <label for="permanentAddress">Permanent Address</label>
+                        <textarea id="permanentAddress" rows="3" required></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Footer -->
+<footer class="site-footer">
+  <div class="footer-container">
+    <p>&copy; 2025 FEINBank. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Support</a>
+    </div>
+  </div>
+</footer>
+</div>
+    <!-- Parallax Footer -->
+    <!--<section class="parallax" id="footer-image"></section>-->
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body.qatar-theme {
+    background-color: #f7f7f7;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+.text-maroon {
+    color: #8A1538;
+}
+
+.bg-maroon {
+    background-color: #8A1538 !important;
+}
+
+.navbar {
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.navbar-brand img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.btn-maroon {
+    background-color: #8A1538;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.25s ease;
+}
+
+.btn-maroon:hover {
+    background-color: #6b0f2f;
+    transform: scale(1.03);
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    padding: 24px;
+}
+
+input.form-control {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+input.form-control:focus {
+    border-color: #8A1538;
+    box-shadow: 0 0 0 0.25rem rgba(138, 21, 56, 0.15);
+}
+
+.table thead th {
+    background-color: #8A1538;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    font-size: 0.95rem;
+    padding: 12px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #fff1f5;
+    transition: background-color 0.3s ease;
+}
+
+.table .btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+}
+
+.footer {
+    background-color: #8A1538;
+    color: white;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 16px 0;
+    margin-top: 40px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.modal-content {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.modal-header {
+    border-bottom: none;
+    padding: 1rem 1.5rem;
+}
+
+.modal-body {
+    padding: 1rem 2rem;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 1rem;
+}
+
+.btn:focus {
+    box-shadow: none !important;
+}
+
+
+/* ============================
+   Oracle JET Integration
+   ============================ */
+
+.oj-web-applayout-body,
+body.qatar-theme {
+    background-color: #f7f7f7;
+    font-family: 'Inter', sans-serif;
+    color: #333;
+}
+
+/* OJET Buttons */
+.oj-button,
+.oj-button.oj-default,
+.oj-button.oj-primary {
+    background-color: #8A1538;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.oj-button:hover,
+.oj-button.oj-hover,
+.oj-button.oj-primary:hover {
+    background-color: #6b0f2f;
+    transform: scale(1.03);
+}
+
+/* OJET Inputs */
+.oj-input-text,
+.oj-text-field {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.oj-input-text:focus,
+.oj-text-field:focus {
+    border-color: #8A1538;
+    box-shadow: 0 0 0 0.25rem rgba(138, 21, 56, 0.15);
+}
+
+/* OJET Table */
+.oj-table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    font-size: 0.95rem;
+}
+
+.oj-table .oj-table-header {
+    background-color: #8A1538;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+}
+
+.oj-table .oj-table-body-row:hover {
+    background-color: #fff1f5;
+    transition: background-color 0.3s ease;
+}
+
+/* OJET Dialog */
+.oj-dialog {
+    border-radius: 1rem;
+}
+
+.oj-dialog-header {
+    background-color: #8A1538;
+    color: #fff;
+    font-weight: 600;
+    padding: 1rem;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.oj-dialog-body {
+    padding: 1rem 2rem;
+}
+
+/* OJET Footer */
+.oj-web-applayout-footer {
+    background-color: #8A1538;
+    color: #fff;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 16px 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+/* Focus Highlight */
+.oj-focus-highlight {
+    box-shadow: 0 0 0 0.2rem rgba(138, 21, 56, 0.25) !important;
+}
+
+/* Optional Utility Class */
+.oj-text-maroon {
+    color: #8A1538 !important;
+}
+
+/* ============================
+   OJET Action Cards Styles
+   ============================ */
+
+.payee-action-card {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.payee-action-card:hover {
+    box-shadow: 0 4px 16px rgba(138, 21, 56, 0.15);
+    transform: translateY(-2px);
+    border-color: #8A1538;
+}
+
+.payee-action-card .card-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    background: linear-gradient(135deg, #8A1538 0%, #6b0f2f 100%);
+    color: white;
+}
+
+.payee-action-card .payee-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+.payee-action-card .payee-info {
+    flex: 1;
+}
+
+.payee-action-card .payee-name {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+}
+
+.payee-action-card .payee-nickname {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+.payee-action-card .card-body {
+    padding: 1.25rem;
+}
+
+.payee-action-card .detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+}
+
+.payee-action-card .detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.payee-action-card .detail-item i {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.payee-action-card .detail-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.payee-action-card .detail-label {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.payee-action-card .detail-value {
+    font-size: 0.95rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.payee-action-card .card-actions {
+    padding: 1rem 1.25rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+}
+
+.payee-action-card .card-actions .btn {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.payee-action-card .card-actions .btn:hover {
+    transform: translateY(-1px);
+}
+
+.payee-action-card .btn-outline-primary {
+    border-color: #8A1538;
+    color: #8A1538;
+}
+
+.payee-action-card .btn-outline-primary:hover {
+    background-color: #8A1538;
+    border-color: #8A1538;
+    color: white;
+}
+
+.payee-action-card .btn-outline-danger:hover {
+    transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .payee-action-card .card-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .payee-action-card .card-actions .btn {
+        flex: none;
+    }
+}

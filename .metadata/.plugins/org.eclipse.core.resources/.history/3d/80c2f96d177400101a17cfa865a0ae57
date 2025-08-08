@@ -1,0 +1,30 @@
+# Server Info
+server.port=8083
+
+spring.application.name=FundTransfer
+
+
+# Oracle DB Configuration
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:orcl
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.username=C##sahilp
+spring.datasource.password=myStrongPassword123
+spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# Eureka Client Configuration
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka/
+
+# Instance Info
+eureka.instance.hostname=localhost
+eureka.instance.prefer-ip-address=true
+eureka.instance.lease-renewal-interval-in-seconds=10
+eureka.instance.lease-expiration-duration-in-seconds=30
+
+# Optional (for better debugging)
+logging.level.com.netflix.eureka=DEBUG
+logging.level.com.netflix.discovery=DEBUG

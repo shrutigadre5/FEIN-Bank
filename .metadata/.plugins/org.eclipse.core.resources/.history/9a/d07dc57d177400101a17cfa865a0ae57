@@ -1,0 +1,17 @@
+spring.application.name=Online-Banking-Payee-Management
+server.port=8082
+spring.datasource.url=jdbc:oracle:thin:@//localhost:1521/orcl
+spring.datasource.username=C##SAHILP
+spring.datasource.password=myStrongPassword123
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+
+
+eureka.client.register-with-eureka=true
+eureka.client.fetch-registry=true
+eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+eureka.instance.hostname=localhost

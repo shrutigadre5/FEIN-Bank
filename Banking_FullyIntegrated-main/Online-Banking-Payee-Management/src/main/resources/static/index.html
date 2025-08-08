@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payee Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <!-- KnockoutJS -->
+</head>
+<body class="qatar-theme">
+    <!-- 🔝 HEADER NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-maroon">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+            <img src="/images/logo.png" alt="Bank Logo">
+            <span>QBank</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMenu">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" href="#">Payees</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" id="accountsBtn">Accounts</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" id="transferBtn">Transfers</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" id="logoutBtn">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Customer Info Display -->
+<div class="container mt-3">
+    <div class="alert alert-info d-none" id="customerInfo">
+        <i class="fas fa-user me-2"></i>
+        <strong>Customer ID:</strong> <span id="currentCustomerId"></span>
+    </div>
+</div>
+
+<!-- 💳 MAIN CONTENT -->
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-maroon">Payee Management</h2>
+        <p class="text-muted">Add, view and manage your trusted payees</p>
+    </div>
+
+    <!-- Form Card -->
+<div class="card shadow p-4 mb-5">
+    <h5 class="card-title text-maroon mb-4"><i class="fas fa-user-plus me-2"></i>Add New Payee</h5>
+    <form id="addPayeeForm">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <input class="form-control" id="payeeName" placeholder="Payee Name" required>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="bankName" placeholder="Bank Name" required>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="payeeAccountNumber" placeholder="Account Number" required>
+            </div>
+            <div class="col-md-3">
+                <input class="form-control" id="ifscCode" placeholder="IFSC Code" required>
+            </div>
+        </div>
+        <div class="row g-3 mt-2">
+            <div class="col-md-3">
+                <input class="form-control" id="nickname" placeholder="Nickname (Optional)">
+            </div>
+        </div>
+        <div class="mt-4 d-flex justify-content-end">
+            <button class="btn btn-maroon" type="submit">
+                <i class="fas fa-plus-circle me-2"></i>Add Payee
+            </button>
+        </div>
+    </form>
+</div>
+
+
+    <div class="card shadow-sm p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title text-maroon mb-0">
+                <i class="fas fa-list me-2"></i>Saved Payees
+            </h5>
+        </div>
+
+        <!-- Action Cards Container -->
+        <div id="payeesCardsContainer" class="row g-3">
+            <!-- Payee cards will be loaded dynamically -->
+        </div>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="text-center py-5 d-none">
+            <i class="fas fa-users text-muted mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-muted">No Payees Found</h5>
+            <p class="text-muted">Add your first payee to get started</p>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletePayeeModal" tabindex="-1" aria-labelledby="deletePayeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content shadow-lg rounded-4">
+      <div class="modal-header bg-danger text-white rounded-top">
+        <h5 class="modal-title d-flex align-items-center">
+          <i class="fas fa-trash-alt me-2"></i> Confirm Delete
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="mb-2">Are you sure you want to <strong>delete this payee?</strong></p>
+        <p><strong id="deletePayeeName"></strong></p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" id="confirmDeleteBtn" class="btn btn-danger rounded-pill px-4">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🧾 Transfer to Payee Confirmation Modal -->
+<div class="modal fade" id="confirmUseModal" tabindex="-1" aria-labelledby="confirmUseModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="confirmUseModalLabel">
+          <i class="fas fa-paper-plane me-2"></i>Transfer Money
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <i class="fas fa-money-bill-transfer text-primary mb-2" style="font-size: 2rem;"></i>
+        </div>
+        <p class="text-center">
+          You are about to initiate a money transfer to:<br>
+          <strong id="usePayeeName" class="text-primary">this payee</strong>
+        </p>
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          You will be redirected to the transfer page to complete the transaction.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Cancel
+        </button>
+        <button type="button" class="btn btn-primary">
+          <i class="fas fa-arrow-right me-1"></i>Proceed to Transfer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer mt-5 py-3 bg-maroon text-white text-center">
+    <div class="container">
+        <small>&copy; 2025 Bank. All rights reserved.</small>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Global variable to store customer ID
+    let currentCustomerId = null;
+
+    // Function to get URL parameters
+    function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Function to initialize the page with customer ID
+    function initializePage() {
+        // Get customerId from URL parameter
+        currentCustomerId = getUrlParameter('customerId');
+        
+        if (!currentCustomerId) {
+            // If no customerId in URL, try to get from session
+            checkCurrentSession();
+        } else {
+            // Login with the customerId from URL
+            loginCustomer(currentCustomerId);
+        }
+    }
+
+    // Function to login customer and create session
+    function loginCustomer(customerId) {
+        console.log('Attempting to login customer:', customerId);
+        
+        fetch(`/api/payees/login/${customerId}`, {
+            method: 'POST',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error(`Login failed with status: ${response.status}`);
+            }
+        })
+        .then(data => {
+            console.log('Login response:', data);
+            currentCustomerId = customerId;
+            
+            // Store customer data in sessionStorage
+            const accountNo = getUrlParameter('accountNo') || '5';
+            storeCustomerData(customerId, accountNo);
+            
+            updateCustomerDisplay();
+            loadPayees();
+        })
+        .catch(error => {
+            console.error('Error logging in:', error);
+            alert('Error logging in: ' + error.message);
+        });
+    }
+
+    // Function to check current session
+    function checkCurrentSession() {
+        fetch('/api/payees/current-customer', {
+            credentials: 'include'
+        })
+        .then(response => response.text())
+        .then(data => {
+            if (data.includes('Current customer ID:')) {
+                currentCustomerId = data.split(':')[1].trim();
+                
+                // Store customer data in sessionStorage
+                const accountNo = getUrlParameter('accountNo') || sessionStorage.getItem('accountNo') || '5';
+                storeCustomerData(currentCustomerId, accountNo);
+                
+                updateCustomerDisplay();
+                loadPayees();
+            } else {
+                // No active session, redirect to login
+                window.location.href = 'http://localhost:8081/homepage.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking session:', error);
+            window.location.href = 'http://localhost:8081/homepage.html';
+        });
+    }
+
+    // Function to update customer display
+    function updateCustomerDisplay() {
+        if (currentCustomerId) {
+            document.getElementById('currentCustomerId').textContent = currentCustomerId;
+            document.getElementById('customerInfo').classList.remove('d-none');
+        }
+    }
+
+    // Function to load payees for current customer
+    function loadPayees() {
+        if (!currentCustomerId) {
+            console.error('No customer ID available');
+            return;
+        }
+
+        console.log('Loading payees for customer:', currentCustomerId);
+        
+        fetch(`/api/payees/customer/${currentCustomerId}`, {
+            credentials: 'include'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(`Failed to load payees: ${response.status}`);
+            }
+        })
+        .then(payees => {
+            console.log('Loaded payees:', payees);
+            displayPayees(payees);
+        })
+        .catch(error => {
+            console.error('Error loading payees:', error);
+            // Display empty table on error
+            displayPayees([]);
+        });
+    }
+
+    // Function to display payees in action cards
+    function displayPayees(payees) {
+        const container = document.getElementById('payeesCardsContainer');
+        const emptyState = document.getElementById('emptyState');
+        
+        container.innerHTML = '';
+        
+        if (payees.length === 0) {
+            emptyState.classList.remove('d-none');
+            return;
+        }
+        
+        emptyState.classList.add('d-none');
+
+        payees.forEach(payee => {
+            const cardCol = document.createElement('div');
+            cardCol.className = 'col-lg-4 col-md-6 col-sm-12';
+            
+            cardCol.innerHTML = `
+                <div class="payee-action-card" data-payee-id="${payee.payeeId}">
+                    <div class="card-header">
+                        <div class="payee-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="payee-info">
+                            <h6 class="payee-name">${payee.payeeName}</h6>
+                            <span class="payee-nickname">${payee.nickname || 'No nickname'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="payee-detail">
+                            <div class="detail-item">
+                                <i class="fas fa-university text-maroon"></i>
+                                <div class="detail-content">
+                                    <span class="detail-label">Bank</span>
+                                    <span class="detail-value">${payee.bankName || 'N/A'}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <i class="fas fa-credit-card text-maroon"></i>
+                                <div class="detail-content">
+                                    <span class="detail-label">Account Number</span>
+                                    <span class="detail-value">${payee.payeeAccountNumber}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <i class="fas fa-code text-maroon"></i>
+                                <div class="detail-content">
+                                    <span class="detail-label">IFSC Code</span>
+                                    <span class="detail-value">${payee.ifscCode || 'N/A'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="btn btn-outline-danger btn-sm delete-payee-btn"
+                                data-payee-id="${payee.payeeId}"
+                                data-payee-name="${payee.payeeName}">
+                            <i class="fas fa-trash-alt me-1"></i>Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(cardCol);
+        });
+
+        // Add event listeners for delete and use buttons
+        addPayeeActionListeners();
+    }
+
+    // Function to add event listeners for payee actions
+    function addPayeeActionListeners() {
+        // Delete buttons
+        document.querySelectorAll('.delete-payee-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const payeeId = this.getAttribute('data-payee-id');
+                const payeeName = this.getAttribute('data-payee-name');
+                showDeleteModal(payeeId, payeeName);
+            });
+        });
+    }
+
+    // Function to show delete modal
+    function showDeleteModal(payeeId, payeeName) {
+        document.getElementById('deletePayeeName').textContent = payeeName;
+        document.getElementById('confirmDeleteBtn').setAttribute('data-payee-id', payeeId);
+        new bootstrap.Modal(document.getElementById('deletePayeeModal')).show();
+    }
+
+    // Add Payee Form Handler
+    document.getElementById('addPayeeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (!currentCustomerId) {
+            alert('No customer session found. Please login again.');
+            return;
+        }
+
+        console.log('Submitting payee for customer:', currentCustomerId);
+
+        const payeeData = {
+            payeeName: document.getElementById('payeeName').value,
+            bankName: document.getElementById('bankName').value,
+            payeeAccountNumber: parseInt(document.getElementById('payeeAccountNumber').value),
+            ifscCode: document.getElementById('ifscCode').value,
+            nickname: document.getElementById('nickname').value
+        };
+
+        console.log('Payee data:', payeeData);
+
+        fetch(`/api/payees/add-for-customer/${currentCustomerId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body: JSON.stringify(payeeData)
+        })
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (response.ok) {
+                return response.json();
+            } else {
+                return response.text().then(text => {
+                    throw new Error(`Server error: ${text}`);
+                });
+            }
+        })
+        .then(data => {
+            console.log('Payee added successfully:', data);
+            alert('Payee added successfully!');
+            document.getElementById('addPayeeForm').reset();
+            loadPayees(); // Reload the payees list
+        })
+        .catch(error => {
+            console.error('Error adding payee:', error);
+            alert('Error adding payee: ' + error.message);
+        });
+    });
+
+    // Delete Payee Handler
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        const payeeId = this.getAttribute('data-payee-id');
+        
+        fetch(`/api/payees/${payeeId}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Payee deleted successfully!');
+                loadPayees(); // Reload the payees list
+                bootstrap.Modal.getInstance(document.getElementById('deletePayeeModal')).hide();
+            } else {
+                throw new Error('Failed to delete payee');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting payee:', error);
+            alert('Error deleting payee. Please try again.');
+        });
+    });
+
+    // Function to store customer data in sessionStorage
+    function storeCustomerData(customerId, accountNo) {
+        sessionStorage.setItem('customerId', customerId);
+        if (accountNo) {
+            sessionStorage.setItem('accountNo', accountNo);
+        }
+    }
+
+    // Function to get customer data from sessionStorage
+    function getCustomerData() {
+        return {
+            customerId: sessionStorage.getItem('customerId'),
+            accountNo: sessionStorage.getItem('accountNo')
+        };
+    }
+
+    // Accounts Button Handler
+    document.getElementById('accountsBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const customerData = getCustomerData();
+        const customerId = customerData.customerId || currentCustomerId;
+        
+        if (customerId) {
+            window.location.href = `http://localhost:8081/account.html?customerId=${customerId}`;
+        } else {
+            alert('Customer session not found. Please login again.');
+            window.location.href = 'http://localhost:8081/homepage.html';
+        }
+    });
+
+    // Transfer Button Handler
+    document.getElementById('transferBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const customerData = getCustomerData();
+        const customerId = customerData.customerId || currentCustomerId;
+        const accountNo = customerData.accountNo || '5'; // Default account number
+        
+        if (customerId) {
+            window.location.href = `http://localhost:8083/index.html?customerId=${customerId}&accountNo=${accountNo}`;
+        } else {
+            alert('Customer session not found. Please login again.');
+            window.location.href = 'http://localhost:8081/homepage.html';
+        }
+    });
+
+    // Logout Handler
+    document.getElementById('logoutBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Clear sessionStorage
+        sessionStorage.removeItem('customerId');
+        sessionStorage.removeItem('accountNo');
+        
+        fetch('/api/payees/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+        .then(() => {
+            // The server will redirect to localhost:8081/homepage.html
+            window.location.href = 'http://localhost:8081/homepage.html';
+        })
+        .catch(error => {
+            console.error('Error during logout:', error);
+            // Fallback redirect even if logout fails
+            window.location.href = 'http://localhost:8081/homepage.html';
+        });
+    });
+
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initializePage);
+</script>
+
+</body>
+</html>

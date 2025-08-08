@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Account - Bank Management</title>
+    <link rel="stylesheet" href="css/admin-info.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="logo-bar">
+        <img src="assets/logo.png" alt="Logo" />
+    </div>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <ul class="menu">
+                <li id="dashboardBtn"><i class="fas fa-chart-pie"></i> Dashboard</li>
+                <li id="pendingBtn"><i class="fas fa-clock"></i> Pending Requests</li>
+                <li id="accountBtn" class="active"><i class="fas fa-user"></i> Account</li>
+                <li id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log Out</li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <header class="topbar">
+                <h2>Welcome, <span id="adminName"></span>!</h2>
+                <div class="profile">
+                    <span class="profile-name" id="profileName">Name<br><small>Admin</small></span>
+                    <i class="fas fa-user-circle fa-2x"></i>
+                </div>
+            </header>
+
+            <section class="account-section">
+                <div class="account-header">
+                    <h3><i class="fas fa-user-shield"></i> Admin Account Information</h3>
+                    <p class="account-subtitle">Manage your admin profile and settings</p>
+                </div>
+
+                <div class="account-content">
+                    <!-- Profile Card -->
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h4 id="displayName">Loading...</h4>
+                            <p class="role-badge">System Administrator</p>
+                            <p class="last-login">Last login: <span id="lastLoginTime">Just now</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Account Details Grid -->
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-header">
+                                <i class="fas fa-id-badge"></i>
+                                <h5>Account Details</h5>
+                            </div>
+                            <div class="detail-content">
+                                <div class="detail-row">
+                                    <span class="detail-label">Admin ID:</span>
+                                    <span class="detail-value" id="adminIdDisplay">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Username:</span>
+                                    <span class="detail-value" id="usernameDisplay">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-primary" id="refreshDataBtn">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                        <button class="btn-danger" id="logoutMainBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/admin-info.js"></script>
+</body>
+</html>

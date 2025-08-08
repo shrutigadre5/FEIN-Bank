@@ -1,0 +1,80 @@
+:root {
+  --brand-maroon: #8D1B3D;
+  --brand-white:  #FFFFFF;
+  --brand-maroon-600: #741532;
+  --brand-maroon-100: #f8e9ee;
+  --muted: #6c757d;
+}
+
+body {
+  background-color: var(--brand-white);
+  color: #212529;
+}
+
+.navbar {
+  background-color: var(--brand-maroon) !important;
+}
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .navbar-text {
+  color: var(--brand-white) !important;
+}
+
+.card {
+  border: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  border-radius: .75rem;
+}
+
+.btn-brand {
+  background-color: var(--brand-maroon);
+  color: var(--brand-white);
+  border-color: var(--brand-maroon);
+}
+.btn-brand:hover, .btn-brand:focus {
+  background-color: var(--brand-maroon-600);
+  border-color: var(--brand-maroon-600);
+  color: var(--brand-white);
+}
+
+.text-brand {
+  color: var(--brand-maroon);
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.table thead th {
+  background: var(--brand-maroon);
+  color: var(--brand-white);
+  vertical-align: middle;
+}
+.table tbody tr:hover {
+  background-color: var(--brand-maroon-100);
+}
+
+.badge-debit {
+  background-color: #dc3545;
+}
+.badge-credit {
+  background-color: #198754;
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.required::after {
+  content: " *";
+  color: #dc3545;
+  font-weight: 700;
+}
+
+.pointer { cursor: pointer; }

@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #FCEEEE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+/* Container */
+.login-container {@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #FCEEEE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+/* Container */
+.login-container {
+  display: flex;
+  flex-direction: row-reverse;
+  max-width: 1000px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+/* Left Form Section */
+.form-section {
+  width: 55%;
+  padding: 40px 30px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.logo {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #8A1538;
+}
+.logo span {
+  color: #333;
+}
+h2 {
+  margin: 0 0 10px;
+}
+.small-text {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13px;
+}
+form button {
+    background: linear-gradient(135deg, #8A1538, #6F0F2A);
+    color: white;
+    border: none;
+    padding: 18px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(138, 21, 56, 0.3);
+    letter-spacing: 1px;
+}
+form button:hover {
+  background-color: #6F0F2A;
+}
+.alt-option {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #444;
+}
+.alt-option a {
+  color: #8A1538;
+  text-decoration: none;
+  font-weight: 600;
+}
+/* Right Parallax/Image Section */
+.image-section {
+  width: 50%;
+  background: url('/images/qatar-city.jpg') center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 30px;
+  position: relative;
+}
+.image-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background:#8A1538; 
+}
+.text-overlay {
+  max-width: 320px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.text-overlay h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.text-overlay p {
+  font-size: 14px;
+}
+
+.company-logo {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.company-logo img {
+    max-width: 120px;
+    max-height: 80px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #8A1538;
+    text-align: center;
+}
+
+.logo span {
+    color: #333;
+}
+
+.captcha-refresh {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    padding: 16px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+    min-width: 60px;
+}
+	
+  display: flex;
+  flex-direction: row-reverse;
+  max-width: 1000px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+/* Left Form Section */
+.form-section {
+  width: 50%;
+  padding: 60px 40px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.logo {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #8A1538;
+}
+.logo span {
+  color: #333;
+}
+h2 {
+  margin: 0 0 10px;
+}
+.small-text {
+  color: #666;
+  margin-bottom: 30px;
+}
+form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+form button {
+  background-color: #8A1538;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+form button:hover {
+  background-color: #6F0F2A;
+}
+.alt-option {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #444;
+}
+.alt-option a {
+  color: #8A1538;
+  text-decoration: none;
+  font-weight: 600;
+}
+/* Right Parallax/Image Section */
+.image-section {
+  width: 50%;
+  background: url('/images/qatar-city.jpg') center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 40px;
+  position: relative;
+}
+.image-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background:#8A1538; 
+}
+.text-overlay {
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.text-overlay h3 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+.text-overlay p {
+  font-size: 16px;
+}

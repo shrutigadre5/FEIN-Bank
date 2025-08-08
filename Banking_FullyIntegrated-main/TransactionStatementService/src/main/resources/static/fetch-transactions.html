@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Transactions by Account Number</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .transaction-card {
+            border-left: 4px solid #007bff;
+            margin-bottom: 10px;
+        }
+        .debit {
+            border-left-color: #dc3545;
+        }
+        .credit {
+            border-left-color: #28a745;
+        }
+        .result-section {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">🔍 Fetch Transactions by Account Number</h1>
+        
+        <!-- Input Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Enter Account Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="accountNumber" class="form-label">Account Number:</label>
+                        <input type="text" class="form-control" id="accountNumber" placeholder="e.g., 20001">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="limit" class="form-label">Limit (for latest):</label>
+                        <input type="number" class="form-control" id="limit" value="10" min="1" max="100">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="endpoint" class="form-label">Endpoint Type:</label>
+                        <select class="form-select" id="endpoint">
+                            <option value="all">All Transactions</option>
+                            <option value="latest" selected>Latest N Transactions</option>
+                            <option value="last6months">Last 6 Months</option>
+                            <option value="statement">Statement (DTO)</option>
+                            <option value="statementWithBalance">Statement with Balance</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-primary" onclick="fetchTransactions()">
+                        🔍 Fetch Transactions
+                    </button>
+                    <button class="btn btn-secondary ms-2" onclick="clearResults()">
+                        🗑️ Clear Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Transaction Results</h5>
+                <span id="resultCount" class="badge bg-info"></span>
+            </div>
+            <div class="card-body result-section" id="results">
+                <p class="text-muted">Enter an account number and click "Fetch Transactions" to see results.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAccountNumber = '';
+        
+        async function fetchTransactions() {
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            const limit = document.getElementById('limit').value;
+            const endpointType = document.getElementById('endpoint').value;
+            
+            if (!accountNumber) {
+                alert('Please enter an account number');
+                return;
+            }
+            
+            currentAccountNumber = accountNumber;
+            
+            // Build the URL based on endpoint type
+            let url = `/api/transactions/${accountNumber}`;
+            
+            switch(endpointType) {
+                case 'all':
+                    url = `/api/transactions/${accountNumber}`;
+                    break;
+                case 'latest':
+                    url = `/api/transactions/${accountNumber}/latest?limit=${limit}`;
+                    break;
+                case 'last6months':
+                    url = `/api/transactions/${accountNumber}/last6months`;
+                    break;
+                case 'statement':
+                    url = `/api/transactions/${accountNumber}/statement`;
+                    break;
+                case 'statementWithBalance':
+                    url = `/api/transactions/${accountNumber}/statementWithBalance?count=${limit}`;
+                    break;
+            }
+            
+            const resultsDiv = document.getElementById('results');
+            const countBadge = document.getElementById('resultCount');
+            
+            // Show loading
+            resultsDiv.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"></div><p>Loading transactions...</p></div>';
+            countBadge.textContent = '';
+            
+            try {
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                displayResults(data, endpointType);
+                
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h6>❌ Error fetching transactions</h6>
+                        <p><strong>URL:</strong> ${url}</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <small>Check console for more details</small>
+                    </div>
+                `;
+                countBadge.textContent = '';
+            }
+        }
+        
+        function displayResults(data, endpointType) {
+            const resultsDiv = document.getElementById('results');
+            const countBadge = document.getElementById('resultCount');
+            
+            if (endpointType === 'statementWithBalance') {
+                displayStatementWithBalance(data);
+                return;
+            }
+            
+            if (!data || data.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-info">
+                        <h6>ℹ️ No transactions found</h6>
+                        <p>No transactions found for account number: <strong>${currentAccountNumber}</strong></p>
+                    </div>
+                `;
+                countBadge.textContent = '0';
+                return;
+            }
+            
+            countBadge.textContent = data.length;
+            
+            let html = '';
+            data.forEach((transaction, index) => {
+                const isCredit = transaction.amount > 0 || (transaction.txnType && transaction.txnType.toUpperCase() === 'CREDIT');
+                const cardClass = isCredit ? 'credit' : 'debit';
+                const amountClass = isCredit ? 'text-success' : 'text-danger';
+                const amountPrefix = isCredit ? '+' : '-';
+                
+                html += `
+                    <div class="card transaction-card ${cardClass}">
+                        <div class="card-body py-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <strong>ID:</strong> ${transaction.transactionId || transaction.id || 'N/A'}<br>
+                                    <small class="text-muted">${transaction.transactionDate || 'N/A'}</small>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Amount:</strong> <span class="h6 ${amountClass}">${amountPrefix}₹${Math.abs(transaction.amount || 0).toFixed(2)}</span><br>
+                                    <small><strong>Method:</strong> ${transaction.paymentMethod || 'N/A'}</small>
+                                </div>
+                                <div class="col-md-3">
+                                    <strong>Type:</strong> ${transaction.txnType || 'N/A'}<br>
+                                    <small><strong>Status:</strong> <span class="badge ${transaction.status === 'COMPLETED' ? 'bg-success' : 'bg-warning'}">${transaction.status || 'N/A'}</span></small>
+                                </div>
+                                <div class="col-md-2">
+                                    <strong>Counterparty:</strong><br>
+                                    <small>${transaction.counterparty || transaction.description || 'N/A'}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function displayStatementWithBalance(data) {
+            const resultsDiv = document.getElementById('results');
+            const countBadge = document.getElementById('resultCount');
+            
+            if (!data) {
+                resultsDiv.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h6>❌ Error</h6>
+                        <p>Invalid response format for statement with balance</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const transactions = data.transactions || [];
+            countBadge.textContent = transactions.length;
+            
+            let html = `
+                <div class="alert alert-info">
+                    <h6>📊 Account Summary</h6>
+                    <div class="row">
+                        <div class="col-md-3"><strong>Account:</strong> ${data.accountNumber || 'N/A'}</div>
+                        <div class="col-md-3"><strong>Customer ID:</strong> ${data.customerId || 'N/A'}</div>
+                        <div class="col-md-3"><strong>Holder:</strong> ${data.holderName || 'N/A'}</div>
+                        <div class="col-md-3"><strong>Balance:</strong> <span class="h6 text-primary">₹${(data.balance || 0).toFixed(2)}</span></div>
+                    </div>
+                </div>
+            `;
+            
+            if (transactions.length === 0) {
+                html += `
+                    <div class="alert alert-warning">
+                        <p>No transactions found for this account.</p>
+                    </div>
+                `;
+            } else {
+                html += '<h6 class="mt-3 mb-2">Recent Transactions:</h6>';
+                transactions.forEach((transaction) => {
+                    const isCredit = transaction.amount > 0 || (transaction.txnType && transaction.txnType.toUpperCase() === 'CREDIT');
+                    const cardClass = isCredit ? 'credit' : 'debit';
+                    const amountClass = isCredit ? 'text-success' : 'text-danger';
+                    const amountPrefix = isCredit ? '+' : '-';
+                    
+                    html += `
+                        <div class="card transaction-card ${cardClass}">
+                            <div class="card-body py-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3">
+                                        <strong>ID:</strong> ${transaction.transactionId || 'N/A'}<br>
+                                        <small class="text-muted">${transaction.transactionDate || 'N/A'}</small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <strong>Amount:</strong> <span class="h6 ${amountClass}">${amountPrefix}₹${Math.abs(transaction.amount || 0).toFixed(2)}</span><br>
+                                        <small><strong>Method:</strong> ${transaction.paymentMethod || 'N/A'}</small>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <strong>Type:</strong> ${transaction.txnType || 'N/A'}<br>
+                                        <small><strong>Status:</strong> <span class="badge ${transaction.status === 'COMPLETED' ? 'bg-success' : 'bg-warning'}">${transaction.status || 'N/A'}</span></small>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <strong>Counterparty:</strong><br>
+                                        <small>${transaction.counterparty || 'N/A'}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '<p class="text-muted">Enter an account number and click "Fetch Transactions" to see results.</p>';
+            document.getElementById('resultCount').textContent = '';
+            document.getElementById('accountNumber').value = '';
+        }
+        
+        // Allow Enter key to trigger search
+        document.getElementById('accountNumber').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                fetchTransactions();
+            }
+        });
+    </script>
+</body>
+</html>

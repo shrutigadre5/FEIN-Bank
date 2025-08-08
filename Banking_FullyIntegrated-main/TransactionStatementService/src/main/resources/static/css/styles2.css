@@ -1,0 +1,165 @@
+:root {
+  --brand-maroon: #8D1B3D;
+  --brand-white:  #FFFFFF;
+  --brand-maroon-600: #741532;
+  --brand-maroon-100: #f8e9ee;
+  --muted: #6c757d;
+}
+
+body {
+  background-color: var(--brand-white);
+  color: #212529;
+  font-family: system-ui, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--brand-maroon) !important;
+  min-height: 60px;
+}
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .navbar-text {
+  color: var(--brand-white) !important;
+  font-size: 1.15rem;
+}
+.navbar .navbar-text {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Card */
+.card {
+  border: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  border-radius: .75rem;
+}
+
+/* Custom Brand Button */
+.btn-brand {
+  background-color: var(--brand-maroon);
+  color: var(--brand-white);
+  border-color: var(--brand-maroon);
+}
+.btn-brand:hover, .btn-brand:focus {
+  background-color: var(--brand-maroon-600);
+  border-color: var(--brand-maroon-600);
+  color: var(--brand-white);
+}
+
+/* Brand Text Color */
+.text-brand {
+  color: var(--brand-maroon);
+}
+.form-label {
+  font-weight: 600;
+}
+
+/* Table */
+.table thead th {
+  background: var(--brand-maroon);
+  color: var(--brand-white);
+  vertical-align: middle;
+}
+.table tbody tr:hover {
+  background-color: var(--brand-maroon-100);
+}
+.pointer {
+  cursor: pointer;
+}
+.table th, .table td {
+  vertical-align: middle !important;
+  font-size: 1rem;
+}
+.table thead th .bi {
+  font-size: 1em;
+  opacity: 0.6;
+  margin-left: 0.2em;
+}
+
+/* Pagination & Meta */
+#pageInfo {
+  font-size: 0.92em;
+  margin-top: 0.25rem;
+}
+
+/* Badges */
+.badge-debit {
+  background-color: #dc3545;
+  color: white;
+  padding: 0.2em 0.5em;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-weight: 700;
+}
+.badge-credit {
+  background-color: #198754;
+  color: white;
+  padding: 0.2em 0.5em;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-weight: 700;
+}
+
+/* Form */
+.required::after {
+  content: " *";
+  color: #dc3545;
+  font-weight: 700;
+}
+.form-select, .form-control {
+  border-radius: 0.3rem;
+}
+label.form-label {
+  margin-bottom: 0.2rem;
+}
+
+/* Result meta at top right */
+#resultMeta {
+  font-size: 0.98em;
+  letter-spacing: 0.02em;
+}
+
+#balanceArea {
+  font-size: 1.10em;
+  font-weight: 600;
+}
+
+/* Loading overlay*/
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* Toasts */
+.toast {
+  min-width: 220px;
+  opacity: 0.98;
+}
+
+/* Small screens */
+@media (max-width: 640px) {
+  .navbar .navbar-brand {
+    font-size: 1rem;
+  }
+  .table th, .table td {
+    font-size: 0.92rem;
+  }
+}
+
+/* Make card and buttons stand out on white background */
+.card .btn-outline-secondary,
+.card .btn-brand {
+  min-width: 100px;
+}
+
+/* Small additional padding on forms and cards */
+.card,
+.card-body {
+  padding-bottom: 1rem;
+}

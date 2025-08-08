@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fund Transfer - Banking Portal</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/additional-styles.css">
+  <script src="js/payment-actions.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <div class="transfer-card">
+     <div class="card-header">
+        <h1 class="card-title">💸 Fund Transfer</h1>
+        <p class="card-subtitle">Secure and instant money transfers</p>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step active" id="step-1">
+          <span>1️⃣</span>
+          <span>Choose Method</span>
+        </div>
+        <div class="step inactive" id="step-2">
+          <span>2️⃣</span>
+          <span>Enter Details</span>
+        </div>
+        <div class="step inactive" id="step-3">
+          <span>3️⃣</span>
+          <span>Confirm Transfer</span>
+        </div>
+      </div>
+
+      <!-- Account Information Display -->
+      <div id="account-info-section" class="form-section">
+        <h3 class="section-title">Account Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer ID</label>
+            <input type="text" id="customer-id" readonly placeholder="Loading...">
+          </div>
+          <div class="form-group">
+            <label>Account Number</label>
+            <input type="text" id="account-number" readonly placeholder="Loading...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Customer Name</label>
+            <input type="text" id="customer-name" readonly placeholder="Loading...">
+          </div>
+          <div class="form-group">
+            <label>Account Balance</label>
+            <input type="text" id="account-balance" readonly placeholder="Loading...">
+          </div>
+        </div>
+        <div id="account-info" class="info-display"></div>
+      </div>
+
+      <!-- Step 1: Transfer Method Selection -->
+      <div id="method-selection" class="form-section">
+        <h3 class="section-title">Choose Transfer Method</h3>
+        <div class="transfer-options">
+          <div class="transfer-option" data-method="self-deposit">
+            <div class="option-icon">💰</div>
+            <div class="option-title">Self Deposit</div>
+            <div class="option-description">Add money to your account</div>
+          </div>
+          <div class="transfer-option" data-method="payee-transfer">
+            <div class="option-icon">👥</div>
+            <div class="option-title">Payee Transfer</div>
+            <div class="option-description">Send to saved beneficiaries</div>
+          </div>
+          <div class="transfer-option" data-method="manual-transfer">
+            <div class="option-icon">🏛️</div>
+            <div class="option-title">Manual Transfer</div>
+            <div class="option-description">Transfer to any account</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Transfer Details -->
+      <div id="transfer-details" class="form-section" style="display: none;">
+        <h3 class="section-title">Transfer Details</h3>
+        
+        <!-- Self Deposit Form -->
+        <div id="self-deposit-form" class="transfer-form" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="self-amount" step="0.01" min="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" id="self-remarks" placeholder="Optional remarks">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Transaction Password <span style="color: red;">*</span></label>
+              <input type="password" id="self-transaction-password" placeholder="Enter transaction password">
+            </div>
+          </div>
+        </div>
+
+        <!-- Payee Transfer Form -->
+        <div id="payee-transfer-form" class="transfer-form" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Select Payee</label>
+              <select id="payee-select">
+                <option value="">Loading payees...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="payee-method">
+                <option value="IMPS">IMPS (Instant)</option>
+                <option value="NEFT">NEFT (Within 2 hours)</option>
+                <option value="RTGS">RTGS (Minimum ₹2,00,000)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="payee-amount" step="0.01" min="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" id="payee-remarks" placeholder="Optional remarks">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Transaction Password <span style="color: red;">*</span></label>
+              <input type="password" id="payee-transaction-password" placeholder="Enter transaction password">
+            </div>
+          </div>
+        </div>
+
+        <!-- Manual Transfer Form -->
+        <div id="manual-transfer-form" class="transfer-form" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Recipient Account Number</label>
+              <div style="display: flex; align-items: center;">
+                <input type="number" id="recipient-account" placeholder="Enter account number">
+                <button type="button" class="validate-btn" id="validate-account">Validate</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>IFSC Code</label>
+              <div style="display: flex; align-items: center;">
+                <input type="text" id="ifsc-code" placeholder="Enter IFSC code" style="text-transform: uppercase;">
+                <button type="button" class="validate-btn" id="validate-ifsc">Validate</button>
+              </div>
+            </div>
+          </div>
+          <div id="validation-info" class="info-display"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Recipient Name <span style="color: red;">*</span></label>
+              <input type="text" id="recipient-name" placeholder="Enter recipient name" 
+                     style="background-color: white; cursor: text; border: 2px solid #ddd;">
+            </div>
+            <div class="form-group">
+              <label>Payment Method</label>
+              <select id="manual-method">
+                <option value="IMPS">IMPS (Instant)</option>
+                <option value="NEFT">NEFT (Within 2 hours)</option>
+                <option value="RTGS">RTGS (Minimum ₹2,00,000)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Amount (₹)</label>
+              <input type="number" id="manual-amount" step="0.01" min="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+              <label>Remarks</label>
+              <input type="text" id="manual-remarks" placeholder="Optional remarks">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Transaction Password <span style="color: red;">*</span></label>
+              <input type="password" id="manual-transaction-password" placeholder="Enter transaction password">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other sections (header, step indicators, account info, transfer method, etc.) remain the same -->
+
+      <!-- Submit Section -->
+      <div class="submit-section" id="submit-section" style="display: block;">
+       
+        <div id="transfer-summary" class="info-display show" style="margin-bottom: 1rem;">
+          <div id="summary-content"></div>
+        </div>
+        <div class="button-group">
+          <button id="submit-transfer" class="submit-btn">Submit Transfer</button>
+          <a href="#" class="cancel-btn" id="cancelPaymentBtn">Cancel Payment</a>
+        </div>
+        <div class="loading" id="loading">
+          <div>Processing your transfer...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

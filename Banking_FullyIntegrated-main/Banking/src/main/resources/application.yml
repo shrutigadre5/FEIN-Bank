@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Admin
+    
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:orcl
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: C##sahilp
+    password: myStrongPassword123
+    
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost

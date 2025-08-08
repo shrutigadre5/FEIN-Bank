@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pending Requests</title>
+  <link rel="stylesheet" href="css/request-page.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="logo-bar">
+    <img src="assets/logo.png" alt="Logo" />
+  </div>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <ul class="menu">
+        <li id="dashboardBtn"><i class="fas fa-chart-pie"></i> Dashboard</li>
+        <li id="pendingBtn" class="active"><i class="fas fa-clock"></i> Pending Requests</li>
+        <li id="accountBtn"><i class="fas fa-user"></i> Account</li>
+        <li id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log Out</li>
+      </ul>
+    </aside>
+
+    <div class="main-content">
+      <header class="topbar">
+        <h2>Welcome, <span id="adminName"></span>!</h2>
+        <div class="profile">
+          <span class="profile-name" id="profileName">Name<br><small>Admin</small></span>
+          <i class="fas fa-user-circle fa-2x"></i>
+        </div>
+      </header>
+
+      <section class="request-section">
+        <h3>Pending Account Requests</h3>
+        <table class="request-table">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Full Name</th>
+              <th>Mobile No </th>
+              <th>Account Type</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="requestsTableBody">
+            <!-- JS Injected Rows -->
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/request-page.js"></script>
+</body>
+</html>

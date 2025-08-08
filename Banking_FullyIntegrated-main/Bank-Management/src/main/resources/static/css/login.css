@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #fceeee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.login-container {
+  display: flex;
+  flex-direction: row;
+  max-width: 800px; /* reduced from 1000px */
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Form Section */
+.form-section {
+  width: 55%; /* slightly wider to balance image shrink */
+  padding: 40px 30px; /* reduced padding */
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 24px; /* smaller */
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #8A1538;
+}
+
+.logo span {
+  color: #333;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 24px; /* Slightly larger heading */
+  color: #8D1B3D; /* Maroon color */
+}
+
+.small-text {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+form button {
+  background-color: #8A1538;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background-color: #6F0F2A;
+}
+
+.alt-option {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #444;
+}
+
+.alt-option a {
+  color: #8A1538;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Right Image Section */
+.image-section {
+  width: 45%;
+  background: url('/images/qatar-city.jpg') center center / cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 30px;
+  position: relative;
+}
+
+.image-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(138, 21, 56, 0.6); /* Darker overlay for better text visibility */
+}
+
+.text-overlay {
+  max-width: 320px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.text-overlay h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.text-overlay p {
+  font-size: 14px;
+}
+
+/* CAPTCHA */
+.captcha-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0; /* Increased margin */
+}
+
+.captcha-code {
+  font-family: 'Courier New', monospace;
+  background-color: #ffffffaa;
+  color: #8D1B3D;
+  padding: 8px 16px;
+  font-size: 18px;
+  letter-spacing: 3px;
+  border: 2px dashed #8D1B3D;
+  border-radius: 5px;
+  min-width: 140px;
+  text-align: center;
+}
+
+#refreshCaptcha {
+  background: #8D1B3D;
+  color: white;
+  font-size: 16px;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#refreshCaptcha:hover {
+  background: #6F0F2A; /* Darker maroon on hover */
+}
+
+#captchaInput:disabled,
+#loginBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.form-section {
+  animation: slideIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.image-section {
+  animation: fadeInRight 0.8s ease-out forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .form-section,
+  .image-section {
+    width: 100%;
+  }
+
+  .image-section {
+    height: 300px; /* Fixed height for image section */
+  }
+}

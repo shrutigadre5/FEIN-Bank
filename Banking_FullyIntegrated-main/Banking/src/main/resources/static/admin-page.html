@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Dashboard</title>
+<link rel="stylesheet" href="css/admin-page.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="logo-bar">
+<img src="assets/logo.png" alt="Logo" />
+</div>
+
+<div class="dashboard-container">
+<aside class="sidebar">
+<!-- remove logo from here -->
+<ul class="menu">
+<li id="dashboardBtn" class="active"><i class="fas fa-chart-pie"></i> Dashboard</li>
+<li id="pendingBtn"><i class="fas fa-clock"></i> Pending Requests</li>
+<li id="accountBtn"><i class="fas fa-user"></i> Account</li>
+<li id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Log Out</li>
+</ul>
+</aside>
+
+<div class="main-content">
+<header class="topbar">
+<h2>Welcome, <span id="adminName"></span>!</h2>
+
+<div class="profile">
+<span class="profile-name" id="profileName">Name<br><small>Admin</small></span>
+<i class="fas fa-user-circle fa-2x"></i>
+</div>
+</header>
+
+<section class="stats">
+<div class="stat-card">
+<h3>Total Customers</h3>
+<p id="customerCount" class="stat-number">Loading...</p>
+</div>
+
+<div class="stat-card">
+<h3>Pending Requests</h3>
+<p id="pendingRequestCount" class="stat-number">Loading...</p>
+</div>
+</section>
+
+
+<section class="charts">
+<div class="chart-card">
+<h4>Active vs Inactive Accounts</h4>
+<canvas id="pieChart"></canvas>
+</div>
+<div class="chart-card">
+<h4>Account Types</h4>
+<canvas id="barChart" height="300"></canvas>
+</div>
+</section>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/js/admin-page.js"></script>
+</body>
+</html>

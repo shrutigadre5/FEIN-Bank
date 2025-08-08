@@ -1,0 +1,105 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body, html {
+  height: 100%;
+  background-color: #8D1B3D;
+  background-image: url('../assets/home-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+}
+
+/* Fade animation container */
+.fade-container {
+  animation: fadeIn 1s ease forwards;
+  opacity: 0;
+}
+
+/* Centering */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Box Styling */
+.content-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 50px 60px;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 520px;
+  opacity: 0;
+  animation: fadeInContent 1s ease 0.5s forwards;
+}
+
+.logo {
+  width: 220px;
+  margin-bottom: 10px;
+}
+
+.bank-title {
+  color: #1b1b3d;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  background-color: #f5f5f5;
+  color: #000;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #8D1B3D;
+  color: white;
+}
+
+/* Fade animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInContent {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Optional back button styling */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: white;
+  color: #8D1B3D;
+  border: 1px solid #8D1B3D;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-weight: bold;
+}
+
+.back-button:hover {
+  background: #8D1B3D;
+  color: white;
+}
